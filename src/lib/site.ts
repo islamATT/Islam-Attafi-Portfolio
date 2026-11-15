@@ -3,7 +3,7 @@ export const CONTACT_EMAIL = "attafi.islam.24@gmail.com";
 // Web3Forms access key (free, from https://web3forms.com — sent to the inbox it was created with).
 // While empty, the contact form falls back to opening the visitor's mail app.
 // The key is designed to be public, so it is safe to keep it in the code.
-export const WEB3FORMS_ACCESS_KEY = "";
+export const WEB3FORMS_ACCESS_KEY = "f596ea5d-8520-4c2c-ac4b-2f1cb7e62c9f";
 
 // WhatsApp number in international format, digits only (no + or spaces).
 export const WHATSAPP_NUMBER = "97470114023";
