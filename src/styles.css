@@ -70,7 +70,8 @@
 :root {
   --radius: 0.125rem;
   --onyx: oklch(0.18 0 0);
-  --gold: oklch(0.72 0.078 78);
+  /* Brand accent (fire orange). Named "gold" for historical reasons; used as text-gold, bg-gold, border-gold. */
+  --gold: oklch(0.72 0.19 45);
   --slate-rich: oklch(0.24 0 0);
   --background: oklch(0.18 0 0);
   --foreground: oklch(0.98 0 0);
