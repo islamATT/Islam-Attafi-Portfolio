@@ -1,22 +1,40 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Camera, Clapperboard, Megaphone, Palette, Play, Smartphone, Users } from "lucide-react";
+import {
+  ArrowUpRight,
+  Camera,
+  Clapperboard,
+  Megaphone,
+  Palette,
+  Play,
+  Smartphone,
+  Users,
+} from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 
 import { ContactForm } from "@/components/ContactForm";
 import { VideoLightbox } from "@/components/VideoLightbox";
-import { CONTACT_EMAIL, PROJECT_VIDEOS, SOCIAL_LINKS } from "@/lib/site";
+import { CONTACT_EMAIL, REELS, SOCIAL_LINKS, type ReelCategory } from "@/lib/site";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
 import heroImage from "@/assets/photos/hero-silhouettes.jpg";
 import aboutPortrait from "@/assets/photos/about-portrait.jpg";
-import workShadowForm from "@/assets/work-shadow-form.jpg";
-import workNoir from "@/assets/work-noir.jpg";
-import workTourer from "@/assets/work-tourer.jpg";
-import reel01 from "@/assets/reel-01.jpg";
-import reel02 from "@/assets/reel-02.jpg";
-import reel03 from "@/assets/reel-03.jpg";
-import reel04 from "@/assets/reel-04.jpg";
+import photoYoungBoy from "@/assets/photos/young-boy.jpg";
+import photoJump from "@/assets/photos/jump-silhouettes.jpg";
+import photoAli from "@/assets/photos/ali-chochena.jpg";
+import photoSunset from "@/assets/photos/sunset.jpg";
+import photoCandle from "@/assets/photos/candle.jpg";
+import photoLifestyle from "@/assets/photos/lifestyle.jpg";
+import photoKlay from "@/assets/photos/klay.jpg";
+import reelLuxury from "@/assets/reels/reel-luxury.jpg";
+import reelBusinessLunch from "@/assets/reels/reel-business-lunch.jpg";
+import reelFakhara from "@/assets/reels/reel-fakhara.jpg";
+import reelCappuccino from "@/assets/reels/reel-cappuccino.jpg";
+import reelDamac from "@/assets/reels/reel-damac.jpg";
+import reelZed from "@/assets/reels/reel-zed-capital.jpg";
+import reelPrestora from "@/assets/reels/reel-prestora.jpg";
+import reelSobha from "@/assets/reels/reel-sobha.jpg";
+import reelGclass from "@/assets/reels/reel-gclass.jpg";
 
 const SITE_URL = "https://islam-attafi-portfolio.lovable.app";
 const OG_IMAGE =
@@ -62,11 +80,10 @@ export const Route = createFileRoute("/")({
           name: "Selected Works — Islam Attafi",
           url: `${SITE_URL}#work`,
           description:
-            "Selected photography and film projects by Islam Attafi, including Shadow & Form, The Noir Series, and The Grand Tourer.",
+            "Social media reels for hospitality, real estate and automotive brands, plus photography by Islam Attafi.",
           hasPart: [
-            { "@type": "CreativeWork", name: "Shadow & Form" },
-            { "@type": "CreativeWork", name: "The Noir Series" },
-            { "@type": "CreativeWork", name: "The Grand Tourer" },
+            { "@type": "CreativeWork", name: "Social Media Reels" },
+            { "@type": "CreativeWork", name: "Photography" },
           ],
         }),
       },
@@ -75,26 +92,36 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const reels = [
-  { src: reel01, num: "01" },
-  { src: reel02, num: "02" },
-  { src: reel03, num: "03" },
-  { src: reel04, num: "04" },
-];
-
 const serviceIcons = [Users, Smartphone, Camera, Clapperboard, Megaphone, Palette];
 
-const films = {
-  shadowForm: { id: PROJECT_VIDEOS.shadowForm, title: "Shadow & Form" },
-  noir: { id: PROJECT_VIDEOS.noir, title: "The Noir Series" },
-  tourer: { id: PROJECT_VIDEOS.tourer, title: "The Grand Tourer" },
-} as const;
+const reelPosters: Record<(typeof REELS)[number]["id"], string> = {
+  luxury: reelLuxury,
+  businessLunch: reelBusinessLunch,
+  fakhara: reelFakhara,
+  cappuccino: reelCappuccino,
+  damac: reelDamac,
+  zedCapital: reelZed,
+  prestora: reelPrestora,
+  sobha: reelSobha,
+  gclass: reelGclass,
+};
+
+const photos = [
+  { key: "jumpSilhouettes", src: photoJump, w: 1400, h: 933, span: "md:col-span-2" },
+  { key: "sunset", src: photoSunset, w: 1400, h: 933, span: "" },
+  { key: "youngBoy", src: photoYoungBoy, w: 1127, h: 1400, span: "md:row-span-2" },
+  { key: "aliChochena", src: photoAli, w: 933, h: 1400, span: "md:row-span-2" },
+  { key: "candle", src: photoCandle, w: 1400, h: 933, span: "md:col-span-2" },
+  { key: "lifestyle", src: photoLifestyle, w: 1400, h: 933, span: "" },
+  { key: "klay", src: photoKlay, w: 1400, h: 933, span: "col-span-2" },
+] as const;
+
+const YOUPIC_URL = "https://youpic.com/islamattafi";
 
 function Index() {
-  const [activeFilm, setActiveFilm] = useState<keyof typeof films | null>(null);
+  const [activeReel, setActiveReel] = useState<(typeof REELS)[number] | null>(null);
+  const [filter, setFilter] = useState<ReelCategory | "all">("all");
   const { t, lang, toggleLang } = useLanguage();
-  const arrow = lang === "ar" ? "\u2190" : "\u2192";
-  const playLabel = (title: string) => `${t.work.play} ${title} ${t.work.film}`.trim();
 
   return (
     <div className="min-h-screen bg-onyx text-foreground font-sans selection:bg-gold/30">
@@ -241,132 +268,105 @@ function Index() {
       </section>
 
       <main id="work" className="mx-auto max-w-7xl px-8 py-32">
-        <div className="mb-24 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <h2 className="font-serif text-4xl">{t.work.heading}</h2>
-          <div className="flex flex-wrap gap-2 md:gap-4">
-            <span className="rounded-full border border-foreground/10 bg-foreground/5 px-4 py-1 text-[10px] uppercase tracking-tighter">
-              {t.work.filterAll}
-            </span>
-            <span className="px-4 py-1 text-[10px] uppercase tracking-tighter text-foreground/40">
-              {t.work.filterFilms}
-            </span>
-            <span className="px-4 py-1 text-[10px] uppercase tracking-tighter text-foreground/40">
-              {t.work.filterEditorial}
-            </span>
+        <div className="mb-16 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-2xl">
+            <p className="mb-6 text-[10px] uppercase tracking-[0.4em] text-gold">
+              {t.work.eyebrow}
+            </p>
+            <h2 className="mb-6 font-serif text-4xl leading-tight md:text-5xl">{t.work.heading}</h2>
+            <p className="text-sm leading-relaxed text-foreground/55">{t.work.intro}</p>
+          </div>
+          <div className="flex flex-wrap gap-2" role="group" aria-label={t.work.eyebrow}>
+            {(["all", "hospitality", "realEstate", "automotive"] as const).map((key) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setFilter(key)}
+                aria-pressed={filter === key}
+                className={`rounded-full border px-4 py-1.5 text-[10px] uppercase tracking-widest transition-colors ${
+                  filter === key
+                    ? "border-gold bg-gold text-onyx"
+                    : "border-foreground/15 text-foreground/60 hover:border-gold hover:text-gold"
+                }`}
+              >
+                {key === "all" ? t.work.filterAll : t.work.categories[key]}
+              </button>
+            ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-12 gap-x-4 gap-y-32 md:gap-x-8">
-          <button
-            type="button"
-            onClick={() => setActiveFilm("shadowForm")}
-            aria-label={playLabel("Shadow & Form")}
-            className="group col-span-12 block text-start"
-          >
-            <div className="relative mb-6 overflow-hidden">
-              <img
-                src={workShadowForm}
-                alt={t.work.shadowForm.alt}
-                loading="lazy"
-                width={1600}
-                height={686}
-                className="aspect-[21/9] w-full object-cover outline-1 -outline-offset-1 outline-foreground/5 transition-transform duration-700 group-hover:scale-105"
-              />
-              <span className="absolute inset-0 flex items-center justify-center bg-onyx/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                <span className="flex h-20 w-20 items-center justify-center border border-gold/60 backdrop-blur-sm">
-                  <Play className="h-5 w-5 text-gold" />
+        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4">
+          {REELS.filter((reel) => filter === "all" || reel.category === filter).map((reel) => {
+            const title = t.work.reels[reel.id];
+            return (
+              <button
+                key={reel.id}
+                type="button"
+                onClick={() => setActiveReel(reel)}
+                aria-label={`${t.work.play}: ${title}`}
+                className="group relative block overflow-hidden bg-black text-start"
+              >
+                <img
+                  src={reelPosters[reel.id]}
+                  alt=""
+                  loading="lazy"
+                  width={540}
+                  height={960}
+                  className="aspect-[9/16] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <span className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/10 to-transparent" />
+                <span className="absolute inset-0 flex items-center justify-center opacity-80 transition-opacity duration-500 group-hover:opacity-100">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full border border-gold/70 bg-onyx/40 backdrop-blur-sm">
+                    <Play className="h-4 w-4 translate-x-[1px] fill-gold text-gold" />
+                  </span>
                 </span>
-              </span>
-            </div>
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="mb-1 font-serif text-2xl">Shadow &amp; Form</h3>
-                <p className="text-[10px] uppercase tracking-widest text-foreground/40">
-                  {t.work.shadowForm.meta}
-                </p>
-              </div>
-              <div className="font-serif text-sm italic text-gold">
-                {t.work.viewFilm} {arrow}
-              </div>
-            </div>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveFilm("noir")}
-            aria-label={playLabel("The Noir Series")}
-            className="group col-span-12 block text-start md:col-span-5"
-          >
-            <div className="relative mb-6 overflow-hidden">
-              <img
-                src={workNoir}
-                alt={t.work.noir.alt}
-                loading="lazy"
-                width={1000}
-                height={1250}
-                className="aspect-[4/5] w-full object-cover outline-1 -outline-offset-1 outline-foreground/5 transition-transform duration-700 group-hover:scale-105"
-              />
-              <span className="absolute inset-0 flex items-center justify-center bg-onyx/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                <span className="flex h-16 w-16 items-center justify-center border border-gold/60 backdrop-blur-sm">
-                  <Play className="h-4 w-4 text-gold" />
+                <span className="absolute inset-x-0 bottom-0 p-4">
+                  <span className="mb-1 block text-[10px] uppercase tracking-widest text-gold">
+                    {t.work.categories[reel.category]}
+                  </span>
+                  <span className="block font-serif text-lg leading-tight">{title}</span>
                 </span>
-              </span>
-            </div>
-            <h3 className="mb-1 font-serif text-xl">The Noir Series</h3>
-            <p className="text-[10px] uppercase tracking-widest text-foreground/40">
-              {t.work.noir.meta}
-            </p>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveFilm("tourer")}
-            aria-label={playLabel("The Grand Tourer")}
-            className="group col-span-12 mt-0 block text-start md:col-span-6 md:col-start-7 md:mt-24"
-          >
-            <div className="relative mb-6 overflow-hidden">
-              <img
-                src={workTourer}
-                alt={t.work.tourer.alt}
-                loading="lazy"
-                width={1200}
-                height={800}
-                className="aspect-[3/2] w-full object-cover outline-1 -outline-offset-1 outline-foreground/5 transition-transform duration-700 group-hover:scale-105"
-              />
-              <span className="absolute inset-0 flex items-center justify-center bg-onyx/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                <span className="flex h-16 w-16 items-center justify-center border border-gold/60 backdrop-blur-sm">
-                  <Play className="h-4 w-4 text-gold" />
-                </span>
-              </span>
-            </div>
-            <h3 className="mb-1 font-serif text-xl">The Grand Tourer</h3>
-            <p className="text-[10px] uppercase tracking-widest text-foreground/40">
-              {t.work.tourer.meta}
-            </p>
-          </button>
+              </button>
+            );
+          })}
         </div>
       </main>
 
-      <section id="social" className="bg-foreground px-8 py-32 text-onyx">
+      <section id="photography" className="bg-foreground px-8 py-32 text-onyx">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-16 flex flex-col items-baseline justify-between gap-8 md:flex-row">
-            <h2 className="font-serif text-5xl md:text-6xl">
-              {t.social.titleLine1} <br /> <span className="italic">{t.social.titleLine2}</span>
-            </h2>
-            <p className="max-w-sm text-sm leading-relaxed text-onyx/60">{t.social.description}</p>
+          <div className="mb-16 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-2xl">
+              <p className="mb-6 text-[10px] uppercase tracking-[0.4em] text-onyx/50">
+                {t.photos.eyebrow}
+              </p>
+              <h2 className="mb-6 font-serif text-4xl leading-tight md:text-5xl">
+                {t.photos.heading}
+              </h2>
+              <p className="text-sm leading-relaxed text-onyx/60">{t.photos.intro}</p>
+            </div>
+            <a
+              href={YOUPIC_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex w-fit items-center gap-2 border-b border-onyx/30 pb-1 text-[10px] uppercase tracking-[0.3em] transition-colors hover:border-onyx"
+            >
+              {t.photos.more}
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 rtl:-scale-x-100" />
+            </a>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {reels.map((reel) => (
-              <img
-                key={reel.num}
-                src={reel.src}
-                alt={`${t.social.reelAlt} — ${t.social.reel} ${reel.num}`}
-                loading="lazy"
-                width={720}
-                height={1280}
-                className="aspect-[9/16] w-full object-cover outline-1 -outline-offset-1 outline-onyx/10"
-              />
+          <div className="grid auto-rows-[220px] grid-cols-2 gap-3 md:auto-rows-[260px] md:grid-cols-4 md:gap-4">
+            {photos.map((photo) => (
+              <figure key={photo.key} className={`group relative overflow-hidden ${photo.span}`}>
+                <img
+                  src={photo.src}
+                  alt={t.photos.items[photo.key]}
+                  loading="lazy"
+                  width={photo.w}
+                  height={photo.h}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </figure>
             ))}
           </div>
         </div>
@@ -414,10 +414,10 @@ function Index() {
       </footer>
 
       <VideoLightbox
-        open={activeFilm !== null}
-        onOpenChange={(open) => !open && setActiveFilm(null)}
-        vimeoId={activeFilm ? films[activeFilm].id : ""}
-        title={activeFilm ? films[activeFilm].title : ""}
+        open={activeReel !== null}
+        onOpenChange={(open) => !open && setActiveReel(null)}
+        driveId={activeReel?.driveId ?? ""}
+        title={activeReel ? t.work.reels[activeReel.id] : ""}
       />
       <Toaster />
     </div>
