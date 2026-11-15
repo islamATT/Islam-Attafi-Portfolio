@@ -1,4 +1,5 @@
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 interface VideoLightboxProps {
   open: boolean;
@@ -8,6 +9,7 @@ interface VideoLightboxProps {
 }
 
 export function VideoLightbox({ open, onOpenChange, vimeoId, title }: VideoLightboxProps) {
+  const { t } = useLanguage();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[95vw] border-foreground/10 bg-onyx p-0 sm:max-w-5xl">
@@ -25,7 +27,9 @@ export function VideoLightbox({ open, onOpenChange, vimeoId, title }: VideoLight
         </div>
         <div className="flex items-baseline justify-between px-6 pb-6">
           <p className="font-serif text-xl">{title}</p>
-          <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Now Playing</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-gold">
+            {t.lightbox.nowPlaying}
+          </p>
         </div>
       </DialogContent>
     </Dialog>

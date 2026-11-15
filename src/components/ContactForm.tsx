@@ -3,23 +3,30 @@ import { z } from "zod";
 import { toast } from "sonner";
 
 import { CONTACT_EMAIL } from "@/lib/site";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import type { Dictionary } from "@/i18n/translations";
 
-const inquirySchema = z.object({
-  name: z.string().trim().min(2, "Please enter your name").max(100),
-  email: z.string().trim().email("Please enter a valid email").max(255),
-  project: z.string().trim().max(120).optional(),
-  message: z.string().trim().min(10, "Tell me a little more").max(1500),
-});
+function buildSchema(f: Dictionary["form"]) {
+  return z.object({
+    name: z.string().trim().min(2, f.errName).max(100),
+    email: z.string().trim().email(f.errEmail).max(255),
+    project: z.string().trim().max(120).optional(),
+    message: z.string().trim().min(10, f.errMessage).max(1500),
+  });
+}
 
-type Errors = Partial<Record<keyof z.infer<typeof inquirySchema>, string>>;
+type Errors = Partial<Record<"name" | "email" | "project" | "message", string>>;
 
 export function ContactForm() {
   const [errors, setErrors] = useState<Errors>({});
+  const { t, lang } = useLanguage();
+  const f = t.form;
+  const arrow = lang === "ar" ? "\u2190" : "\u2192";
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const parsed = inquirySchema.safeParse({
+    const parsed = buildSchema(f).safeParse({
       name: form.get("name"),
       email: form.get("email"),
       project: form.get("project"),
@@ -37,11 +44,11 @@ export function ContactForm() {
 
     setErrors({});
     const { name, email, project, message } = parsed.data;
-    const subject = `New inquiry — ${project || "Project"} — ${name}`;
+    const subject = `${f.subjectPrefix} — ${project || f.subjectProject} — ${name}`;
     const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Project type: ${project || "—"}`,
+      `${f.bodyName}: ${name}`,
+      `${f.bodyEmail}: ${email}`,
+      `${f.bodyProject}: ${project || "—"}`,
       "",
       message,
     ].join("\n");
@@ -49,7 +56,7 @@ export function ContactForm() {
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
       subject,
     )}&body=${encodeURIComponent(body)}`;
-    toast.success("Opening your mail app to send the inquiry.");
+    toast.success(f.toast);
   }
 
   const fieldClass =
@@ -61,21 +68,28 @@ export function ContactForm() {
       <div className="grid gap-8 md:grid-cols-2">
         <div className="grid gap-2">
           <label htmlFor="name" className={labelClass}>
-            Name
+            {f.name}
           </label>
-          <input id="name" name="name" maxLength={100} placeholder="Your name" className={fieldClass} />
+          <input
+            id="name"
+            name="name"
+            maxLength={100}
+            placeholder={f.namePlaceholder}
+            className={fieldClass}
+          />
           {errors.name && <p className="text-[11px] text-destructive">{errors.name}</p>}
         </div>
         <div className="grid gap-2">
           <label htmlFor="email" className={labelClass}>
-            Email
+            {f.email}
           </label>
           <input
             id="email"
             name="email"
             type="email"
             maxLength={255}
-            placeholder="you@studio.com"
+            placeholder={f.emailPlaceholder}
+            dir="ltr"
             className={fieldClass}
           />
           {errors.email && <p className="text-[11px] text-destructive">{errors.email}</p>}
@@ -84,27 +98,27 @@ export function ContactForm() {
 
       <div className="grid gap-2">
         <label htmlFor="project" className={labelClass}>
-          Project type
+          {f.project}
         </label>
         <input
           id="project"
           name="project"
           maxLength={120}
-          placeholder="Film / Editorial / Social campaign"
+          placeholder={f.projectPlaceholder}
           className={fieldClass}
         />
       </div>
 
       <div className="grid gap-2">
         <label htmlFor="message" className={labelClass}>
-          Brief
+          {f.brief}
         </label>
         <textarea
           id="message"
           name="message"
           rows={4}
           maxLength={1500}
-          placeholder="Timeline, scope and references."
+          placeholder={f.briefPlaceholder}
           className={`${fieldClass} resize-none`}
         />
         {errors.message && <p className="text-[11px] text-destructive">{errors.message}</p>}
@@ -114,8 +128,10 @@ export function ContactForm() {
         type="submit"
         className="group flex w-fit items-center gap-4 border border-gold/40 px-10 py-4 text-[10px] uppercase tracking-[0.4em] text-gold transition-colors hover:bg-gold hover:text-onyx"
       >
-        Send inquiry
-        <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
+        {f.submit}
+        <span className="transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
+          {arrow}
+        </span>
       </button>
     </form>
   );

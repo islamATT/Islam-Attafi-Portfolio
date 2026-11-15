@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { ContactForm } from "@/components/ContactForm";
 import { VideoLightbox } from "@/components/VideoLightbox";
 import { CONTACT_EMAIL, PROJECT_VIDEOS, SOCIAL_LINKS } from "@/lib/site";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 import heroDesert from "@/assets/hero-desert.jpg";
 import workShadowForm from "@/assets/work-shadow-form.jpg";
@@ -74,10 +75,10 @@ export const Route = createFileRoute("/")({
 });
 
 const reels = [
-  { src: reel01, label: "Reel 01" },
-  { src: reel02, label: "Reel 02" },
-  { src: reel03, label: "Reel 03" },
-  { src: reel04, label: "Reel 04" },
+  { src: reel01, num: "01" },
+  { src: reel02, num: "02" },
+  { src: reel03, num: "03" },
+  { src: reel04, num: "04" },
 ];
 
 const films = {
@@ -88,21 +89,39 @@ const films = {
 
 function Index() {
   const [activeFilm, setActiveFilm] = useState<keyof typeof films | null>(null);
+  const { t, lang, toggleLang } = useLanguage();
+  const arrow = lang === "ar" ? "\u2190" : "\u2192";
+  const playLabel = (title: string) => `${t.work.play} ${title} ${t.work.film}`.trim();
 
   return (
     <div className="min-h-screen bg-onyx text-foreground font-sans selection:bg-gold/30">
-      <nav className="fixed top-0 z-50 flex w-full items-center justify-between px-8 py-6 mix-blend-difference">
-        <span className="font-serif text-2xl italic tracking-tight">Islam Attafi.</span>
-        <div className="flex gap-12 text-[10px] font-medium uppercase tracking-[0.3em]">
+      <nav className="fixed top-0 z-50 flex w-full items-center justify-between px-6 py-6 mix-blend-difference md:px-8">
+        <span
+          dir="ltr"
+          className="whitespace-nowrap font-serif text-xl italic tracking-tight md:text-2xl"
+          style={{ fontFamily: '"Playfair Display", serif', fontStyle: "italic" }}
+        >
+          Islam Attafi.
+        </span>
+        <div className="flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.15em] sm:gap-5 md:gap-12 md:tracking-[0.3em]">
           <a href="#work" className="transition-colors hover:text-gold">
-            Work
+            {t.nav.work}
           </a>
           <a href="#social" className="transition-colors hover:text-gold">
-            Services
+            {t.nav.services}
           </a>
           <a href="#contact" className="transition-colors hover:text-gold">
-            Contact
+            {t.nav.contact}
           </a>
+          <button
+            type="button"
+            onClick={toggleLang}
+            aria-label={t.nav.toggleLabel}
+            lang={lang === "en" ? "ar" : "en"}
+            className="border border-foreground/30 px-3 py-1 text-[11px] tracking-normal transition-colors hover:border-gold hover:text-gold"
+          >
+            {t.nav.toggle}
+          </button>
         </div>
       </nav>
 
@@ -110,7 +129,7 @@ function Index() {
         <div className="absolute inset-0 z-0">
           <img
             src={heroDesert}
-            alt="Cinematic desert landscape at dusk"
+            alt={t.hero.imageAlt}
             width={1920}
             height={1088}
             className="h-full w-full object-cover opacity-60"
@@ -119,11 +138,10 @@ function Index() {
 
         <div className="relative z-10 text-center">
           <h1 className="mb-6 font-serif text-7xl leading-[0.9] md:text-9xl">
-            Visual <br /> <span className="italic">Storytelling</span>
+            {t.hero.titleLine1} <br /> <span className="italic">{t.hero.titleLine2}</span>
           </h1>
           <p className="mx-auto max-w-md text-sm uppercase tracking-widest text-foreground/60">
-            High-end videography and visual direction for luxury brands and independent
-            creators.
+            {t.hero.tagline}
           </p>
         </div>
 
@@ -133,32 +151,32 @@ function Index() {
       </header>
 
       <main id="work" className="mx-auto max-w-7xl px-8 py-32">
-        <div className="mb-24 flex items-end justify-between">
-          <h2 className="font-serif text-4xl">Selected Works</h2>
-          <div className="flex gap-4">
+        <div className="mb-24 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <h2 className="font-serif text-4xl">{t.work.heading}</h2>
+          <div className="flex flex-wrap gap-2 md:gap-4">
             <span className="rounded-full border border-foreground/10 bg-foreground/5 px-4 py-1 text-[10px] uppercase tracking-tighter">
-              All Projects
+              {t.work.filterAll}
             </span>
             <span className="px-4 py-1 text-[10px] uppercase tracking-tighter text-foreground/40">
-              Films
+              {t.work.filterFilms}
             </span>
             <span className="px-4 py-1 text-[10px] uppercase tracking-tighter text-foreground/40">
-              Editorial
+              {t.work.filterEditorial}
             </span>
           </div>
         </div>
 
-        <div className="grid grid-cols-12 gap-x-8 gap-y-32">
+        <div className="grid grid-cols-12 gap-x-4 gap-y-32 md:gap-x-8">
           <button
             type="button"
             onClick={() => setActiveFilm("shadowForm")}
-            aria-label="Play Shadow & Form film"
-            className="group col-span-12 block text-left"
+            aria-label={playLabel("Shadow & Form")}
+            className="group col-span-12 block text-start"
           >
             <div className="relative mb-6 overflow-hidden">
               <img
                 src={workShadowForm}
-                alt="Minimalist concrete architecture against a black sky"
+                alt={t.work.shadowForm.alt}
                 loading="lazy"
                 width={1600}
                 height={686}
@@ -174,23 +192,25 @@ function Index() {
               <div>
                 <h3 className="mb-1 font-serif text-2xl">Shadow &amp; Form</h3>
                 <p className="text-[10px] uppercase tracking-widest text-foreground/40">
-                  Architectural Cinematography / 2024
+                  {t.work.shadowForm.meta}
                 </p>
               </div>
-              <div className="font-serif text-sm italic text-gold">View Film &rarr;</div>
+              <div className="font-serif text-sm italic text-gold">
+                {t.work.viewFilm} {arrow}
+              </div>
             </div>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveFilm("noir")}
-            aria-label="Play The Noir Series film"
-            className="group col-span-12 block text-left md:col-span-5"
+            aria-label={playLabel("The Noir Series")}
+            className="group col-span-12 block text-start md:col-span-5"
           >
             <div className="relative mb-6 overflow-hidden">
               <img
                 src={workNoir}
-                alt="High contrast black and white fashion portrait"
+                alt={t.work.noir.alt}
                 loading="lazy"
                 width={1000}
                 height={1250}
@@ -204,20 +224,20 @@ function Index() {
             </div>
             <h3 className="mb-1 font-serif text-xl">The Noir Series</h3>
             <p className="text-[10px] uppercase tracking-widest text-foreground/40">
-              Photography / Branding
+              {t.work.noir.meta}
             </p>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveFilm("tourer")}
-            aria-label="Play The Grand Tourer film"
-            className="group col-span-12 mt-0 block text-left md:col-span-6 md:col-start-7 md:mt-24"
+            aria-label={playLabel("The Grand Tourer")}
+            className="group col-span-12 mt-0 block text-start md:col-span-6 md:col-start-7 md:mt-24"
           >
             <div className="relative mb-6 overflow-hidden">
               <img
                 src={workTourer}
-                alt="Luxury car driving through a misty mountain pass"
+                alt={t.work.tourer.alt}
                 loading="lazy"
                 width={1200}
                 height={800}
@@ -231,31 +251,27 @@ function Index() {
             </div>
             <h3 className="mb-1 font-serif text-xl">The Grand Tourer</h3>
             <p className="text-[10px] uppercase tracking-widest text-foreground/40">
-              Social Media Campaign / Videography
+              {t.work.tourer.meta}
             </p>
           </button>
         </div>
-
       </main>
 
       <section id="social" className="bg-foreground px-8 py-32 text-onyx">
         <div className="mx-auto max-w-7xl">
           <div className="mb-16 flex flex-col items-baseline justify-between gap-8 md:flex-row">
             <h2 className="font-serif text-5xl md:text-6xl">
-              Social <br /> <span className="italic">Curation</span>
+              {t.social.titleLine1} <br /> <span className="italic">{t.social.titleLine2}</span>
             </h2>
-            <p className="max-w-sm text-sm leading-relaxed text-onyx/60">
-              Tailored content for high-performance social media channels, focusing on
-              aesthetic consistency and engagement.
-            </p>
+            <p className="max-w-sm text-sm leading-relaxed text-onyx/60">{t.social.description}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {reels.map((reel) => (
               <img
-                key={reel.label}
+                key={reel.num}
                 src={reel.src}
-                alt={`Social media reel frame — ${reel.label}`}
+                alt={`${t.social.reelAlt} — ${t.social.reel} ${reel.num}`}
                 loading="lazy"
                 width={720}
                 height={1280}
@@ -270,13 +286,14 @@ function Index() {
         <div className="mx-auto grid max-w-7xl gap-20 md:grid-cols-2">
           <div>
             <p className="mb-6 text-[10px] uppercase tracking-[0.4em] text-gold">
-              Available for projects
+              {t.contact.available}
             </p>
             <h2 className="mb-8 font-serif text-5xl leading-[1.05] md:text-6xl">
-              Start a <br /> <span className="italic">Conversation</span>
+              {t.contact.titleLine1} <br /> <span className="italic">{t.contact.titleLine2}</span>
             </h2>
             <a
               href={`mailto:${CONTACT_EMAIL}`}
+              dir="ltr"
               className="font-serif text-xl text-foreground/70 transition-colors hover:text-gold"
             >
               {CONTACT_EMAIL}
@@ -302,7 +319,7 @@ function Index() {
 
       <footer className="border-t border-foreground/5 px-8 py-10">
         <div className="mx-auto max-w-7xl text-[10px] uppercase tracking-tighter text-foreground/20">
-          &copy; 2026 Islam Attafi Visuals. All Rights Reserved.
+          {t.footer.rights}
         </div>
       </footer>
 
@@ -314,6 +331,5 @@ function Index() {
       />
       <Toaster />
     </div>
-
   );
 }

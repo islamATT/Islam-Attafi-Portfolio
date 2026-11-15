@@ -152,3 +152,19 @@
     color: var(--color-foreground);
   }
 }
+
+/* Arabic (RTL): use IBM Plex Sans Arabic for all text, including headings
+   that use the serif font in English (Playfair has no Arabic glyphs). */
+[dir="rtl"] body,
+[dir="rtl"] .font-sans,
+[dir="rtl"] .font-serif {
+  font-family: "IBM Plex Sans Arabic", "Inter", sans-serif;
+}
+
+/* Arabic letters must stay connected: wide letter-spacing and italics break them. */
+[dir="rtl"] [class*="tracking-"] {
+  letter-spacing: 0 !important;
+}
+[dir="rtl"] .italic {
+  font-style: normal;
+}
