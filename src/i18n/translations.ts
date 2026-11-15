@@ -6,6 +6,7 @@ export type Lang = "en" | "ar";
 export const translations = {
   en: {
     nav: {
+      about: "About",
       work: "Work",
       services: "Services",
       contact: "Contact",
@@ -20,7 +21,18 @@ export const translations = {
         "10 years behind the camera. Now managing the full social journey, from concept to campaign to results.",
       ctaWork: "View My Work",
       ctaContact: "Let's Talk",
-      imageAlt: "Cinematic desert landscape at dusk",
+      imageAlt: "Silhouettes of friends jumping at sunset by the sea, photographed by Islam Attafi",
+    },
+    about: {
+      eyebrow: "About Me",
+      heading: "Behind the lens, ahead of the feed",
+      body: "I'm Islam Attafi, a photographer turned social media manager based in Doha. After 10 years behind the camera and running my own photography company in Algeria, I now lead social media and content for a medical aesthetics center in Qatar, from strategy and ad campaigns to shooting and editing the content myself.",
+      imageAlt: "Islam Attafi holding a Canon camera up to his face",
+      stats: [
+        { value: "10+", label: "Years in photography" },
+        { value: "2", label: "Languages: Arabic & English" },
+        { value: "52K+", label: "Views on YouPic" },
+      ],
     },
     work: {
       heading: "Selected Works",
@@ -81,6 +93,7 @@ export const translations = {
   },
   ar: {
     nav: {
+      about: "عني",
       work: "أعمالي",
       services: "الخدمات",
       contact: "تواصل",
@@ -95,7 +108,18 @@ export const translations = {
         "10 سنوات خلف الكاميرا، والحين أدير رحلة السوشيال ميديا كاملة: من الفكرة إلى الحملة إلى النتائج.",
       ctaWork: "شاهد أعمالي",
       ctaContact: "تواصل معي",
-      imageAlt: "منظر صحراوي سينمائي عند الغروب",
+      imageAlt: "ظلال أصدقاء يقفزون عند الغروب على شاطئ البحر، بعدسة إسلام عطافي",
+    },
+    about: {
+      eyebrow: "عني",
+      heading: "خلف العدسة، وأمام المنصّة",
+      body: "أنا إسلام عطافي، مصوّر تحوّلت إلى إدارة السوشيال ميديا، ومقيم في الدوحة. بعد 10 سنوات خلف الكاميرا وإدارة شركة تصوير خاصة بي في الجزائر، أقود اليوم السوشيال ميديا وصناعة المحتوى لمركز تجميل طبي في قطر، من الاستراتيجية والحملات الإعلانية إلى تصوير المحتوى ومونتاجه بنفسي.",
+      imageAlt: "إسلام عطافي يحمل كاميرا كانون أمام وجهه",
+      stats: [
+        { value: "+10", label: "سنوات في التصوير" },
+        { value: "2", label: "لغتان: العربية والإنجليزية" },
+        { value: "+52K", label: "مشاهدة على YouPic" },
+      ],
     },
     work: {
       heading: "أعمال مختارة",

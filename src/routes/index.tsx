@@ -8,7 +8,8 @@ import { VideoLightbox } from "@/components/VideoLightbox";
 import { CONTACT_EMAIL, PROJECT_VIDEOS, SOCIAL_LINKS } from "@/lib/site";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
-import heroDesert from "@/assets/hero-desert.jpg";
+import heroImage from "@/assets/photos/hero-silhouettes.jpg";
+import aboutPortrait from "@/assets/photos/about-portrait.jpg";
 import workShadowForm from "@/assets/work-shadow-form.jpg";
 import workNoir from "@/assets/work-noir.jpg";
 import workTourer from "@/assets/work-tourer.jpg";
@@ -104,6 +105,9 @@ function Index() {
           Islam Attafi.
         </span>
         <div className="flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.15em] sm:gap-5 md:gap-12 md:tracking-[0.3em]">
+          <a href="#about" className="hidden transition-colors hover:text-gold sm:inline">
+            {t.nav.about}
+          </a>
           <a href="#work" className="hidden transition-colors hover:text-gold sm:inline">
             {t.nav.work}
           </a>
@@ -128,12 +132,13 @@ function Index() {
       <header className="relative flex h-screen items-center justify-center overflow-hidden px-8">
         <div className="absolute inset-0 z-0">
           <img
-            src={heroDesert}
+            src={heroImage}
             alt={t.hero.imageAlt}
             width={1920}
-            height={1088}
-            className="h-full w-full object-cover opacity-60"
+            height={1139}
+            className="h-full w-full object-cover opacity-70"
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-onyx/70 via-onyx/45 to-onyx/90" />
         </div>
 
         <div className="relative z-10 text-center">
@@ -164,6 +169,45 @@ function Index() {
           <div className="h-16 w-[1px] bg-gradient-to-b from-gold to-transparent" />
         </div>
       </header>
+
+      <section id="about" className="mx-auto max-w-7xl px-8 pt-32">
+        <div className="grid items-center gap-16 md:grid-cols-2">
+          <div className="relative overflow-hidden">
+            <img
+              src={aboutPortrait}
+              alt={t.about.imageAlt}
+              loading="lazy"
+              width={1400}
+              height={932}
+              className="aspect-[4/5] w-full object-cover outline-1 -outline-offset-1 outline-foreground/5"
+            />
+          </div>
+          <div>
+            <p className="mb-6 text-[10px] uppercase tracking-[0.4em] text-gold">
+              {t.about.eyebrow}
+            </p>
+            <h2 className="mb-8 font-serif text-4xl leading-tight md:text-5xl">
+              {t.about.heading}
+            </h2>
+            <p className="max-w-xl text-base leading-relaxed text-foreground/70">{t.about.body}</p>
+            <dl className="mt-12 grid grid-cols-3 gap-6 border-t border-foreground/10 pt-8">
+              {t.about.stats.map((stat) => (
+                <div key={stat.label}>
+                  <dt className="sr-only">{stat.label}</dt>
+                  <dd>
+                    <span dir="ltr" className="block font-serif text-4xl text-gold md:text-5xl">
+                      {stat.value}
+                    </span>
+                    <span className="mt-2 block text-[10px] uppercase tracking-widest text-foreground/50">
+                      {stat.label}
+                    </span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </section>
 
       <main id="work" className="mx-auto max-w-7xl px-8 py-32">
         <div className="mb-24 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">

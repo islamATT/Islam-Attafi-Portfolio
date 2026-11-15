@@ -4,6 +4,7 @@ export const SOCIAL_LINKS = [
   { label: "Instagram", href: "https://www.instagram.com/islamattafi" },
   { label: "Vimeo", href: "https://vimeo.com/islamattafi" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/islamattafi" },
+  { label: "YouPic", href: "https://youpic.com/islamattafi" },
 ] as const;
 
 // Vimeo video IDs per project — replace with your own film IDs.
