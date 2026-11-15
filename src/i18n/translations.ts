@@ -5,6 +5,14 @@ export type Lang = "en" | "ar";
 
 export const translations = {
   en: {
+    close: "Close",
+    notFound: "Page not found",
+    notFoundDescription: "The page you're looking for doesn't exist or has been moved.",
+    goHome: "Go home",
+    pageError: "This page didn't load",
+    pageErrorDescription:
+      "Something went wrong on our end. You can try refreshing or head back home.",
+    tryAgain: "Try again",
     nav: {
       about: "About",
       work: "Work",
@@ -117,6 +125,9 @@ export const translations = {
       errEmail: "Please enter a valid email",
       errMessage: "Tell me a little more",
       toast: "Opening your mail app to send the inquiry.",
+      sending: "Sending…",
+      sent: "Thanks! Your message was sent. I'll get back to you within 24 hours.",
+      sendError: "The message couldn't be sent. Opening your mail app instead.",
       subjectPrefix: "New inquiry",
       subjectProject: "Project",
       bodyName: "Name",
@@ -127,6 +138,13 @@ export const translations = {
     footer: { rights: "© 2026 Islam Attafi Visuals. All Rights Reserved." },
   },
   ar: {
+    close: "إغلاق",
+    notFound: "الصفحة غير موجودة",
+    notFoundDescription: "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+    goHome: "العودة للرئيسية",
+    pageError: "تعذّر تحميل الصفحة",
+    pageErrorDescription: "حدث خطأ من جانبنا. يمكنك تحديث الصفحة أو العودة للرئيسية.",
+    tryAgain: "حاول مجددًا",
     nav: {
       about: "عني",
       work: "أعمالي",
@@ -240,6 +258,9 @@ export const translations = {
       errEmail: "من فضلك اكتب بريدًا إلكترونيًا صحيحًا",
       errMessage: "أخبرني بتفاصيل أكثر قليلًا",
       toast: "جارٍ فتح تطبيق البريد لإرسال طلبك.",
+      sending: "جارٍ الإرسال…",
+      sent: "شكرًا! وصلتني رسالتك، وسأرد عليك خلال 24 ساعة.",
+      sendError: "تعذّر إرسال الرسالة. سأفتح لك تطبيق البريد بدلًا من ذلك.",
       subjectPrefix: "طلب جديد",
       subjectProject: "مشروع",
       bodyName: "الاسم",
@@ -256,3 +277,14 @@ export type Dictionary = (typeof translations)["en"];
 // Compile-time check: Arabic must have exactly the same keys as English.
 const _arCheck: Dictionary = translations.ar;
 void _arCheck;
+
+export type Language = Lang;
+export const LANGUAGE_STORAGE_KEY = "portfolio-language";
+
+export function resolveLanguage(value: string | null): Lang {
+  return value === "ar" ? "ar" : "en";
+}
+
+export function languageDirection(language: Lang): "ltr" | "rtl" {
+  return language === "ar" ? "rtl" : "ltr";
+}

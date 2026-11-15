@@ -1,0 +1,4 @@
+- [x] Centralize English and Arabic copy, including forms, player, and error pages.
+- [x] Add remembered navbar switching and document language/direction.
+- [x] Apply Arabic font and mirror layout with small-screen checks.
+- [x] Test language rules and verify switching, validation, persistence, and player.

@@ -1,9 +1,13 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 
-import { translations, type Dictionary, type Lang } from "./translations";
-
-const STORAGE_KEY = "lang";
-const DEFAULT_LANG: Lang = "en";
+import {
+  LANGUAGE_STORAGE_KEY,
+  languageDirection,
+  resolveLanguage,
+  translations,
+  type Dictionary,
+  type Lang,
+} from "./translations";
 
 interface LanguageContextValue {
   lang: Lang;
@@ -13,39 +17,38 @@ interface LanguageContextValue {
   toggleLang: () => void;
 }
 
-const LanguageContext = createContext<LanguageContextValue | null>(null);
-
-function readStoredLang(): Lang | null {
-  try {
-    const value = window.localStorage.getItem(STORAGE_KEY);
-    return value === "ar" || value === "en" ? value : null;
-  } catch {
-    return null;
-  }
-}
+const LanguageContext = createContext<LanguageContextValue>({
+  lang: "en",
+  dir: "ltr",
+  t: translations.en,
+  setLang: () => {},
+  toggleLang: () => {},
+});
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  // Always start with the default so server and client render the same markup,
-  // then switch to the stored choice right after hydration.
-  const [lang, setLangState] = useState<Lang>(DEFAULT_LANG);
+  // Start in English so server and client render the same markup,
+  // then restore the visitor's saved choice right after hydration.
+  const [lang, setLangState] = useState<Lang>("en");
 
   useEffect(() => {
-    const stored = readStoredLang();
-    if (stored && stored !== DEFAULT_LANG) setLangState(stored);
+    try {
+      setLangState(resolveLanguage(window.localStorage.getItem(LANGUAGE_STORAGE_KEY)));
+    } catch {
+      // Storage unavailable: stay in English.
+    }
   }, []);
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.lang = lang;
-    root.dir = lang === "ar" ? "rtl" : "ltr";
+    document.documentElement.lang = lang;
+    document.documentElement.dir = languageDirection(lang);
   }, [lang]);
 
   const setLang = useCallback((next: Lang) => {
     setLangState(next);
     try {
-      window.localStorage.setItem(STORAGE_KEY, next);
+      window.localStorage.setItem(LANGUAGE_STORAGE_KEY, next);
     } catch {
-      // Storage unavailable (private mode etc.) — language still switches for this visit.
+      // Switching still works for this visit without storage.
     }
   }, []);
 
@@ -53,13 +56,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   return (
     <LanguageContext.Provider
-      value={{
-        lang,
-        dir: lang === "ar" ? "rtl" : "ltr",
-        t: translations[lang],
-        setLang,
-        toggleLang,
-      }}
+      value={{ lang, dir: languageDirection(lang), t: translations[lang], setLang, toggleLang }}
     >
       {children}
     </LanguageContext.Provider>
@@ -67,7 +64,5 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 }
 
 export function useLanguage() {
-  const ctx = useContext(LanguageContext);
-  if (!ctx) throw new Error("useLanguage must be used inside <LanguageProvider>");
-  return ctx;
+  return useContext(LanguageContext);
 }

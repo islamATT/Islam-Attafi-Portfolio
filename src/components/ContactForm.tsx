@@ -3,7 +3,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { ChevronDown } from "lucide-react";
 
-import { CONTACT_EMAIL } from "@/lib/site";
+import { CONTACT_EMAIL, WEB3FORMS_ACCESS_KEY } from "@/lib/site";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import type { Dictionary } from "@/i18n/translations";
 
@@ -20,17 +20,21 @@ type Errors = Partial<Record<"name" | "email" | "project" | "message", string>>;
 
 export function ContactForm() {
   const [errors, setErrors] = useState<Errors>({});
+  const [sending, setSending] = useState(false);
   const { t, lang } = useLanguage();
   const f = t.form;
   const arrow = lang === "ar" ? "\u2190" : "\u2192";
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const formEl = event.currentTarget;
+    const form = new FormData(formEl);
+    // Honeypot: real visitors never see or fill this field.
+    if (form.get("botcheck")) return;
     const parsed = buildSchema(f).safeParse({
       name: form.get("name"),
       email: form.get("email"),
-      project: form.get("project"),
+      project: form.get("project") || undefined,
       message: form.get("message"),
     });
 
@@ -54,10 +58,45 @@ export function ContactForm() {
       message,
     ].join("\n");
 
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
-    toast.success(f.toast);
+    const openMailApp = () => {
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+        subject,
+      )}&body=${encodeURIComponent(body)}`;
+    };
+
+    if (!WEB3FORMS_ACCESS_KEY) {
+      openMailApp();
+      toast.success(f.toast);
+      return;
+    }
+
+    setSending(true);
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject,
+          from_name: "islamattafi.com",
+          replyto: email,
+          name,
+          email,
+          project: project || "—",
+          message,
+          language: lang,
+        }),
+      });
+      const result = (await response.json()) as { success?: boolean };
+      if (!response.ok || !result.success) throw new Error("Web3Forms rejected the submission");
+      toast.success(f.sent);
+      formEl.reset();
+    } catch {
+      toast.error(f.sendError);
+      openMailApp();
+    } finally {
+      setSending(false);
+    }
   }
 
   const fieldClass =
@@ -66,6 +105,14 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="grid gap-8">
+      <input
+        type="checkbox"
+        name="botcheck"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="hidden"
+      />
       <div className="grid gap-8 md:grid-cols-2">
         <div className="grid gap-2">
           <label htmlFor="name" className={labelClass}>
@@ -143,9 +190,11 @@ export function ContactForm() {
 
       <button
         type="submit"
-        className="group flex w-fit items-center gap-4 border border-gold/40 px-10 py-4 text-[10px] uppercase tracking-[0.4em] text-gold transition-colors hover:bg-gold hover:text-onyx"
+        disabled={sending}
+        aria-busy={sending}
+        className="group flex w-fit items-center gap-4 border border-gold/40 px-10 py-4 text-[10px] uppercase tracking-[0.4em] text-gold transition-colors hover:bg-gold hover:text-onyx disabled:cursor-wait disabled:opacity-60"
       >
-        {f.submit}
+        {sending ? f.sending : f.submit}
         <span className="transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
           {arrow}
         </span>
