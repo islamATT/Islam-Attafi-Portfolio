@@ -34,6 +34,24 @@ export const translations = {
         { value: "52K+", label: "Views on YouPic" },
       ],
     },
+    services: {
+      eyebrow: "Services",
+      heading: "What I can do for your brand",
+      items: [
+        {
+          title: "Social Media Management",
+          body: "Strategy, content calendar, posting and community management.",
+        },
+        { title: "Content Creation", body: "Reels, stories and carousels built for engagement." },
+        { title: "Photography", body: "Product, food, portrait and event photography." },
+        {
+          title: "Videography & Editing",
+          body: "Shooting and editing videos from concept to final cut.",
+        },
+        { title: "Paid Ads", body: "Ad campaigns on Meta and TikTok, from setup to reporting." },
+        { title: "Visual Design", body: "Social posts, banners and print materials." },
+      ],
+    },
     work: {
       heading: "Selected Works",
       filterAll: "All Projects",
@@ -119,6 +137,27 @@ export const translations = {
         { value: "+10", label: "سنوات في التصوير" },
         { value: "2", label: "لغتان: العربية والإنجليزية" },
         { value: "+52K", label: "مشاهدة على YouPic" },
+      ],
+    },
+    services: {
+      eyebrow: "الخدمات",
+      heading: "ماذا يمكنني أن أقدّم لعلامتك التجارية",
+      items: [
+        {
+          title: "إدارة السوشيال ميديا",
+          body: "استراتيجية، خطة نشر، وإدارة الحسابات والتفاعل مع الجمهور.",
+        },
+        { title: "صناعة المحتوى", body: "ريلز وستوري وبوستات متعددة الصور مصمَّمة للتفاعل." },
+        { title: "التصوير الفوتوغرافي", body: "تصوير منتجات، أكل، بورتريه، ومناسبات." },
+        {
+          title: "تصوير ومونتاج الفيديو",
+          body: "تصوير ومونتاج الفيديو من الفكرة إلى النسخة النهائية.",
+        },
+        {
+          title: "الإعلانات الممولة",
+          body: "حملات إعلانية على ميتا وتيك توك، من الإعداد إلى التقارير.",
+        },
+        { title: "التصميم البصري", body: "بوستات سوشيال ميديا، بنرات، ومطبوعات." },
       ],
     },
     work: {

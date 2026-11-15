@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Play } from "lucide-react";
+import { Camera, Clapperboard, Megaphone, Palette, Play, Smartphone, Users } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 
 import { ContactForm } from "@/components/ContactForm";
@@ -82,6 +82,8 @@ const reels = [
   { src: reel04, num: "04" },
 ];
 
+const serviceIcons = [Users, Smartphone, Camera, Clapperboard, Megaphone, Palette];
+
 const films = {
   shadowForm: { id: PROJECT_VIDEOS.shadowForm, title: "Shadow & Form" },
   noir: { id: PROJECT_VIDEOS.noir, title: "The Noir Series" },
@@ -108,11 +110,11 @@ function Index() {
           <a href="#about" className="hidden transition-colors hover:text-gold sm:inline">
             {t.nav.about}
           </a>
+          <a href="#services" className="hidden transition-colors hover:text-gold sm:inline">
+            {t.nav.services}
+          </a>
           <a href="#work" className="hidden transition-colors hover:text-gold sm:inline">
             {t.nav.work}
-          </a>
-          <a href="#social" className="hidden transition-colors hover:text-gold sm:inline">
-            {t.nav.services}
           </a>
           <a href="#contact" className="hidden transition-colors hover:text-gold sm:inline">
             {t.nav.contact}
@@ -206,6 +208,35 @@ function Index() {
               ))}
             </dl>
           </div>
+        </div>
+      </section>
+
+      <section id="services" className="mx-auto max-w-7xl px-8 pt-32">
+        <p className="mb-6 text-[10px] uppercase tracking-[0.4em] text-gold">
+          {t.services.eyebrow}
+        </p>
+        <h2 className="mb-16 max-w-2xl font-serif text-4xl leading-tight md:text-5xl">
+          {t.services.heading}
+        </h2>
+        <div className="grid gap-px overflow-hidden border border-foreground/10 bg-foreground/10 sm:grid-cols-2 lg:grid-cols-3">
+          {t.services.items.map((item, index) => {
+            const Icon = serviceIcons[index] ?? Users;
+            return (
+              <div
+                key={item.title}
+                className="group bg-onyx p-8 transition-colors duration-500 hover:bg-foreground/[0.03] md:p-10"
+              >
+                <div className="mb-8 flex items-center justify-between">
+                  <Icon className="h-6 w-6 text-gold" strokeWidth={1.25} aria-hidden="true" />
+                  <span dir="ltr" className="font-serif text-sm text-foreground/25">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <h3 className="mb-3 font-serif text-2xl">{item.title}</h3>
+                <p className="text-sm leading-relaxed text-foreground/55">{item.body}</p>
+              </div>
+            );
+          })}
         </div>
       </section>
 
