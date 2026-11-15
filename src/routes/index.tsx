@@ -45,12 +45,11 @@ import reelPrestora from "@/assets/reels/reel-prestora.jpg";
 import reelSobha from "@/assets/reels/reel-sobha.jpg";
 import reelGclass from "@/assets/reels/reel-gclass.jpg";
 
-const SITE_URL = "https://islam-attafi-portfolio.lovable.app";
-const OG_IMAGE =
-  "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/f7da6a29-1211-4d08-ac79-e49794e3ebbc";
-const TITLE = "Islam Attafi | Photographer & Content Creator";
+const SITE_URL = "https://www.islamattafi.com";
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+const TITLE = "Islam Attafi | Social Media Manager & Photographer in Doha";
 const DESCRIPTION =
-  "Islam Attafi is a photographer, videographer, and social media content creator specializing in cinematic visuals, and editorial photography.";
+  "Social media manager and photographer based in Doha, Qatar. 10 years behind the camera: content creation, Reels, paid ads and photography for hospitality, real estate and lifestyle brands.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -61,6 +60,11 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: DESCRIPTION },
       { property: "og:url", content: SITE_URL },
       { property: "og:image", content: OG_IMAGE },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Islam Attafi — From Lens to Feed" },
+      { property: "og:locale", content: "en_US" },
+      { property: "og:locale:alternate", content: "ar_QA" },
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESCRIPTION },
       { name: "twitter:image", content: OG_IMAGE },
@@ -75,7 +79,20 @@ export const Route = createFileRoute("/")({
           name: "Islam Attafi",
           url: SITE_URL,
           image: OG_IMAGE,
-          jobTitle: "Photographer & Videographer",
+          jobTitle: "Social Media Manager & Photographer",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Doha",
+            addressCountry: "QA",
+          },
+          knowsLanguage: ["ar", "en"],
+          knowsAbout: [
+            "Social Media Management",
+            "Content Creation",
+            "Photography",
+            "Videography",
+            "Paid Social Advertising",
+          ],
           description: DESCRIPTION,
           email: `mailto:${CONTACT_EMAIL}`,
           sameAs: SOCIAL_LINKS.map((s) => s.href),
