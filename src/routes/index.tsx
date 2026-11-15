@@ -104,13 +104,13 @@ function Index() {
           Islam Attafi.
         </span>
         <div className="flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.15em] sm:gap-5 md:gap-12 md:tracking-[0.3em]">
-          <a href="#work" className="transition-colors hover:text-gold">
+          <a href="#work" className="hidden transition-colors hover:text-gold sm:inline">
             {t.nav.work}
           </a>
-          <a href="#social" className="transition-colors hover:text-gold">
+          <a href="#social" className="hidden transition-colors hover:text-gold sm:inline">
             {t.nav.services}
           </a>
-          <a href="#contact" className="transition-colors hover:text-gold">
+          <a href="#contact" className="hidden transition-colors hover:text-gold sm:inline">
             {t.nav.contact}
           </a>
           <button
@@ -137,12 +137,27 @@ function Index() {
         </div>
 
         <div className="relative z-10 text-center">
-          <h1 className="mb-6 font-serif text-7xl leading-[0.9] md:text-9xl">
+          <p className="mb-8 text-[10px] uppercase tracking-[0.4em] text-gold">{t.hero.location}</p>
+          <h1 className="mb-6 font-serif text-6xl leading-[0.95] sm:text-7xl md:text-9xl">
             {t.hero.titleLine1} <br /> <span className="italic">{t.hero.titleLine2}</span>
           </h1>
-          <p className="mx-auto max-w-md text-sm uppercase tracking-widest text-foreground/60">
+          <p className="mx-auto max-w-lg text-sm uppercase leading-relaxed tracking-widest text-foreground/60">
             {t.hero.tagline}
           </p>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <a
+              href="#work"
+              className="border border-gold bg-gold px-8 py-4 text-[10px] uppercase tracking-[0.3em] text-onyx transition-colors hover:bg-transparent hover:text-gold"
+            >
+              {t.hero.ctaWork}
+            </a>
+            <a
+              href="#contact"
+              className="border border-foreground/30 px-8 py-4 text-[10px] uppercase tracking-[0.3em] text-foreground transition-colors hover:border-gold hover:text-gold"
+            >
+              {t.hero.ctaContact}
+            </a>
+          </div>
         </div>
 
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce">

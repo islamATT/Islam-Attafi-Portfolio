@@ -13,10 +13,13 @@ export const translations = {
       toggleLabel: "Switch to Arabic",
     },
     hero: {
-      titleLine1: "Visual",
-      titleLine2: "Storytelling",
+      location: "Based in Doha, Qatar",
+      titleLine1: "From Lens",
+      titleLine2: "to Feed",
       tagline:
-        "High-end videography and visual direction for luxury brands and independent creators.",
+        "10 years behind the camera. Now managing the full social journey, from concept to campaign to results.",
+      ctaWork: "View My Work",
+      ctaContact: "Let's Talk",
       imageAlt: "Cinematic desert landscape at dusk",
     },
     work: {
@@ -85,9 +88,13 @@ export const translations = {
       toggleLabel: "التبديل إلى الإنجليزية",
     },
     hero: {
-      titleLine1: "سرد",
-      titleLine2: "بصري",
-      tagline: "تصوير فيديو احترافي وإخراج بصري للعلامات الفاخرة وصنّاع المحتوى المستقلين.",
+      location: "مقيم في الدوحة، قطر",
+      titleLine1: "من العدسة",
+      titleLine2: "إلى المنصّة",
+      tagline:
+        "10 سنوات خلف الكاميرا، والحين أدير رحلة السوشيال ميديا كاملة: من الفكرة إلى الحملة إلى النتائج.",
+      ctaWork: "شاهد أعمالي",
+      ctaContact: "تواصل معي",
       imageAlt: "منظر صحراوي سينمائي عند الغروب",
     },
     work: {

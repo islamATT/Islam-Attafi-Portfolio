@@ -168,3 +168,9 @@
 [dir="rtl"] .italic {
   font-style: normal;
 }
+
+/* Arabic glyphs need more size than Latin caps to stay readable at small sizes. */
+[dir="rtl"] .text-\[10px\],
+[dir="rtl"] .text-\[11px\] {
+  font-size: 12px;
+}
