@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
+import { ChevronDown } from "lucide-react";
 
 import { CONTACT_EMAIL } from "@/lib/site";
 import { useLanguage } from "@/i18n/LanguageProvider";
@@ -100,13 +101,29 @@ export function ContactForm() {
         <label htmlFor="project" className={labelClass}>
           {f.project}
         </label>
-        <input
-          id="project"
-          name="project"
-          maxLength={120}
-          placeholder={f.projectPlaceholder}
-          className={fieldClass}
-        />
+        <div className="relative">
+          <select
+            id="project"
+            name="project"
+            defaultValue=""
+            required
+            className={`${fieldClass} cursor-pointer appearance-none invalid:text-foreground/25 [&>option]:bg-onyx [&>option]:text-foreground`}
+          >
+            <option value="" disabled>
+              {f.projectPlaceholder}
+            </option>
+            {t.services.items.map((item) => (
+              <option key={item.title} value={item.title}>
+                {item.title}
+              </option>
+            ))}
+            <option value={f.projectOther}>{f.projectOther}</option>
+          </select>
+          <ChevronDown
+            className="pointer-events-none absolute end-0 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/40"
+            aria-hidden="true"
+          />
+        </div>
       </div>
 
       <div className="grid gap-2">

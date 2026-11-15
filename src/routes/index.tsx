@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   ArrowUpRight,
+  Mail,
+  MessageCircle,
   Camera,
   Clapperboard,
   Megaphone,
@@ -14,7 +16,14 @@ import { Toaster } from "@/components/ui/sonner";
 
 import { ContactForm } from "@/components/ContactForm";
 import { VideoLightbox } from "@/components/VideoLightbox";
-import { CONTACT_EMAIL, REELS, SOCIAL_LINKS, type ReelCategory } from "@/lib/site";
+import {
+  CONTACT_EMAIL,
+  REELS,
+  SOCIAL_LINKS,
+  WHATSAPP_DISPLAY,
+  whatsappLink,
+  type ReelCategory,
+} from "@/lib/site";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
 import heroImage from "@/assets/photos/hero-silhouettes.jpg";
@@ -378,28 +387,54 @@ function Index() {
             <p className="mb-6 text-[10px] uppercase tracking-[0.4em] text-gold">
               {t.contact.available}
             </p>
-            <h2 className="mb-8 font-serif text-5xl leading-[1.05] md:text-6xl">
+            <h2 className="mb-6 font-serif text-5xl leading-[1.05] md:text-6xl">
               {t.contact.titleLine1} <br /> <span className="italic">{t.contact.titleLine2}</span>
             </h2>
+            <p className="mb-10 text-sm text-foreground/55">{t.contact.response}</p>
+
+            <a
+              href={whatsappLink(t.contact.whatsappMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mb-8 inline-flex items-center gap-4 border border-gold bg-gold px-6 py-4 text-onyx transition-colors hover:bg-transparent hover:text-gold"
+            >
+              <MessageCircle className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
+              <span className="flex flex-col">
+                <span className="text-[10px] uppercase tracking-[0.3em]">{t.contact.whatsapp}</span>
+                <span dir="ltr" className="font-serif text-lg">
+                  {WHATSAPP_DISPLAY}
+                </span>
+              </span>
+            </a>
+
             <a
               href={`mailto:${CONTACT_EMAIL}`}
-              dir="ltr"
-              className="font-serif text-xl text-foreground/70 transition-colors hover:text-gold"
+              className="flex w-fit items-center gap-3 text-foreground/70 transition-colors hover:text-gold"
             >
-              {CONTACT_EMAIL}
+              <Mail className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
+              <span className="sr-only">{t.contact.emailLabel}: </span>
+              <span dir="ltr" className="font-serif text-lg">
+                {CONTACT_EMAIL}
+              </span>
             </a>
-            <div className="mt-12 flex gap-8 text-[10px] uppercase tracking-widest text-foreground/60">
-              {SOCIAL_LINKS.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-colors hover:text-gold"
-                >
-                  {social.label}
-                </a>
-              ))}
+
+            <div className="mt-12">
+              <p className="mb-4 text-[10px] uppercase tracking-[0.3em] text-foreground/40">
+                {t.contact.followLabel}
+              </p>
+              <div className="flex flex-wrap gap-x-8 gap-y-3 text-[10px] uppercase tracking-widest text-foreground/60">
+                {SOCIAL_LINKS.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-gold"
+                  >
+                    {social.label}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 

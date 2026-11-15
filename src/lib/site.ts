@@ -1,5 +1,13 @@
 export const CONTACT_EMAIL = "attafi.islam.24@gmail.com";
 
+// WhatsApp number in international format, digits only (no + or spaces).
+export const WHATSAPP_NUMBER = "97470114023";
+export const WHATSAPP_DISPLAY = "+974 7011 4023";
+
+export function whatsappLink(message: string) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
 export const SOCIAL_LINKS = [
   { label: "Instagram", href: "https://www.instagram.com/islamattafi" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/islamattafi" },
